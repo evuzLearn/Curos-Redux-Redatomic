@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Saludo from './components/Saludo'
 
-const HolaMundo = (props) => (
-    <h1>React funciona en caliente</h1>
-)
-
-ReactDOM.render(<HolaMundo/>, document.getElementById('app'));
+ReactDOM.render(
+    <Saludo
+        text={'Hola'}
+        user={{name: 'Jesus', lastname: 'Gómez'}}
+        />,
+    document.getElementById('app'));
