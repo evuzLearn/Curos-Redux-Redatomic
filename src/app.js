@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Saludo from './components/Saludo'
+import Counter from './components/Counter';
 
 ReactDOM.render(
-    <Saludo
-        text={'Hola'}
-        user={{name: 'Jesus', lastname: 'Gómez'}}
-        />,
+    <Counter />,
     document.getElementById('app'));
