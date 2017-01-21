@@ -32,22 +32,25 @@ class Cronometro extends Component {
         super();
         this.state = {
             isRunning: false,
+            start: 0,
             current: 0
         }
         this.handleStart = this.handleStart.bind(this)
         this.handleStop = this.handleStop.bind(this)
     }
     handleStart() {
-        const ms = 100;
+        console.log('Start')
         if (this.state.isRunning) return;
         this.setState({
             isRunning: true,
+            start: Date.now(),
+            current: Date.now()
         })
         this._interval = setInterval(() => {
             this.setState({
-                current: this.state.current + ms
+                current: Date.now()
             })
-        }, ms);
+        }, 100);
     }
     handleStop() {
         console.log('Stop');
@@ -58,6 +61,7 @@ class Cronometro extends Component {
         })
         } else {
           this.setState({
+            start: 0,
             current: 0
         })  
         }
