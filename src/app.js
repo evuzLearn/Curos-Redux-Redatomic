@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Saludo from './components/Saludo';
-import Counter from './components/Counter';
-import Cronometro from './components/Cronometro';
+import Saludo from './components/saludo';
+import Counter from './components/counter';
+import Cronometro from './components/cronometro';
+import Buscador from './components/buscador';
 
 ReactDOM.render(
-    <Cronometro />,
+    <Buscador />,
     document.getElementById('app'));
