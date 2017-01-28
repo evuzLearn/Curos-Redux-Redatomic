@@ -1,8 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import Title from './title';
 import ProductItem from './product_item';
+import { products as catalogProducts } from '../../data/catalog';
+import { saveProducts } from '../../modules/catalog/actions';
+import { connect } from 'react-redux';
 
 class Catalog extends Component {
+    componentDidMount () {
+        setTimeout(() => {
+            this.props.dispatch(saveProducts(catalogProducts));
+        }, 500)
+    }
+
     render() {
         const { products, onAddCart } = this.props;
         const productsItem = products.map(x => (
@@ -28,4 +37,10 @@ Catalog.PropTypes = {
     onAddCart: PropTypes.func
 }
 
-export default Catalog;
+const mapStateToProps = state => {
+    return {
+        products: state.catalog
+    }
+}
+
+export default connect(mapStateToProps)(Catalog);

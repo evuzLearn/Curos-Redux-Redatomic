@@ -3,14 +3,12 @@ import Catalog from './catalog';
 import Cart from './cart';
 import Checkout from './checkout';
 import ThankYou from './thank_you';
-import { connect } from 'react-redux';
-import { products as catalogProducts } from '../../data/catalog';
+import { connect } from 'react-redux';  
 
 class Ecommerce extends Component {
     constructor() {
         super();
         this.state = {
-            products: catalogProducts,
             cart: [],
             checkoutOrder: {},
             errorOrders: {}
@@ -104,7 +102,6 @@ class Ecommerce extends Component {
         switch (page) {
             case 'catalog':
                 return <Catalog
-                    products={catalogProducts}
                     onAddCart={this.handleAddCart}
                     />
             case 'cart':
