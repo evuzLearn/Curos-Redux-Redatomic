@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Catalog from './catalog';
 import Cart from './cart';
 import Checkout from './checkout';
 import ThankYou from './thank_you';
+import { connect } from 'react-redux';
 import { products as catalogProducts } from '../../data/catalog';
 
 class Ecommerce extends Component {
     constructor() {
         super();
         this.state = {
-            page: 'catalog',
             products: catalogProducts,
             cart: [],
             checkoutOrder: {},
@@ -92,9 +92,10 @@ class Ecommerce extends Component {
     }
 
     render() {
+        const component = this.getPageComponent(this.props.route); 
         return (
             <div className="shopping-cart">
-                {this.getPageComponent(this.state.page)}
+                { component }
             </div>
         )
     }
@@ -126,4 +127,12 @@ class Ecommerce extends Component {
     }
 }
 
-export default Ecommerce;
+Ecommerce.PropTypes = {
+    route: PropTypes.string.isRequired
+}
+
+const mapStateToProps = state => ({
+    route: state.route
+})
+
+export default connect(mapStateToProps)(Ecommerce);
