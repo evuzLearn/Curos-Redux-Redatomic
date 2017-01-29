@@ -8,11 +8,7 @@ import { connect } from 'react-redux';
 class Ecommerce extends Component {
     constructor() {
         super();
-        this.state = {
-            cart: [],
-            checkoutOrder: {},
-            errorOrders: {}
-        }
+        
         this.handlePageComponent = this.handlePageComponent.bind(this);
         this.handleAddCart = this.handleAddCart.bind(this);
         this.handleChangeQty = this.handleChangeQty.bind(this);
