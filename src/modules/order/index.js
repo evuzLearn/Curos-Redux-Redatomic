@@ -24,7 +24,7 @@ function details(state = initialState, action) {
 function errors(state = [], action) {
     switch (action.type) {
         case SAVE_ERRORS:
-            return actions.errors;
+            return action.errors;
             break;
         case CLEAR_ERRORS:
             return {};

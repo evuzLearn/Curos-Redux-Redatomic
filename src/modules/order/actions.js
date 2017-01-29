@@ -1,6 +1,6 @@
 import { SAVE_DETAILS, SAVE_ERRORS, CLEAR_ERRORS } from './actionTypes';
 import { emptyCart } from '../cart';
-import {goToThankYou} from '../route';
+import { goToThankYou } from '../route';
 
 function validate(details) {
     const { firstName, lastName, email, address} = details;
@@ -9,13 +9,13 @@ function validate(details) {
         errors.firstName = 'Debe introducir su nombre';
 
     if (!lastName)
-        errors.firstName = 'Debe introducir su apellido';
+        errors.lastName = 'Debe introducir su apellido';
 
     if (!email)
-        errors.firstName = 'Debe introducir su e-mail';
+        errors.email = 'Debe introducir su e-mail';
 
     if (!address)
-        errors.firstName = 'Debe introducir su dirección';
+        errors.address = 'Debe introducir su dirección';
 
     return errors;
 }

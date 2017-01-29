@@ -1,40 +1,29 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { saveOrder, saveDetails } from '../../modules/order';
+import { goToCart } from '../../modules/route';
 import Title from './title';
 import CheckoutFormItem from './checkout_form_item';
-
 class Checkout extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            address: ''
-        }
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handleClickButton = this.handleClickButton.bind(this);
-        this.handleBackToCart = this.handleBackToCart.bind(this);
     }
 
-    handleFieldChange(e) {
-        this.setState({
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.saveOrder(this.props.details);
+    }
+
+    handleFieldChange (e) {
+        this.props.saveDetails({
             [e.target.name]: e.target.value
         })
     }
 
-    handleClickButton(e) {
-        e.preventDefault();
-        this.props.onProcessOrder(Object.assign({}, this.state));
-    }
-
-    handleBackToCart() {
-        this.props.onBackToCart('cart');
-    }
-
     render() {
-        const { firstName, lastName, email, address } = this.state;
-        const { errors } = this.props;
+        const { errors, details } = this.props;
         return (
             <div className="checkout">
                 <Title title='Productos' />
@@ -44,7 +33,7 @@ class Checkout extends Component {
                         <input
                             type="text"
                             name="firstName"
-                            value={firstName}
+                            value={details.firstName}
                             onChange={this.handleFieldChange}
                             className={ errors.firstName ? "error" : "" }
                             />
@@ -53,7 +42,7 @@ class Checkout extends Component {
                         <input
                             type="text"
                             name="lastName"
-                            value={lastName}
+                            value={details.lastName}
                             onChange={this.handleFieldChange}
                             className={ errors.lastName ? "error" : "" }
                             />
@@ -62,7 +51,7 @@ class Checkout extends Component {
                         <input
                             type="text"
                             name="email"
-                            value={email}
+                            value={details.email}
                             onChange={this.handleFieldChange}
                             className={ errors.email ? "error" : "" }
                             />
@@ -70,17 +59,17 @@ class Checkout extends Component {
                     <CheckoutFormItem label="Dirección" error={errors.address}>
                         <textarea
                             name="address"
-                            value={address}
+                            value={details.address}
                             onChange={this.handleFieldChange}
                             className={ errors.address ? "error big" : "" }
                             />
                     </CheckoutFormItem>
                     <div className="row">
                         <div className="col one-one">
-                            <button className="button" onClick={this.handleBackToCart}>Volver</button>
+                            <button className="button" onClick={this.props.goToCart}>Volver</button>
                         </div>
                         <div className="col two-one">
-                            <button className="button" onClick={this.handleClickButton}>Finalizar</button>
+                            <button className="button" onClick={this.handleSubmit}>Finalizar</button>
                         </div>
                     </div>
                 </div>
@@ -91,8 +80,26 @@ class Checkout extends Component {
 
 Checkout.PropTypes = {
     errors: PropTypes.object,
-    onProcessOrder: PropTypes.func.isRequired,
-    onBackToCart: PropTypes.func.isRequired,
+    details: PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      address: PropTypes.string.isRequired,  
+    }),
+    goToCart: PropTypes.func.isRequired,
+    saveDetails: PropTypes.func.isRequired,
+    saveOrder: PropTypes.func.isRequired,
 }
 
-export default Checkout;
+const mapStateToProps = state => ({
+    errors: state.order.errors,
+    details: state.order.details
+})
+
+const mapDispatchToProps = {
+    saveDetails,
+    saveOrder,
+    goToCart
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
