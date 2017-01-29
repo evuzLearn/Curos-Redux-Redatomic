@@ -1,26 +1,31 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { goToCatalog } from '../../modules/route';
 import Title from './title';
 
-class ThankYou extends Component {
-    render() {
-        const { orderDetails, onBackToShop } = this.props;
-        return (
-            <div className="thank-you">
-                <Title title='Productos'/>
+const ThankYou = ({details, goToCatalog}) => (
+    <div className="thank-you">
+        <Title title='Productos' />
 
-                <p>Gracias { orderDetails.firstName }, tu pedido llegará en breve a la dirección: { orderDetails.address }</p>
-                <p><button className="button" onClick={onBackToShop}>Volver a la tienda</button></p>
-            </div>
-        )
-    }
-}
+        <p>Gracias {details.firstName}, tu pedido llegará en breve a la dirección: {details.address}</p>
+        <p><button className="button" onClick={goToCatalog}>Volver a la tienda</button></p>
+    </div>
+);
 
 ThankYou.PropTypes = {
-    orderDetails: PropTypes.shape({
-        address: PropTypes.string,
-        firstName: PropTypes.string
+    details: PropTypes.shape({
+        address: PropTypes.string.isRequired,
+        firstName: PropTypes.string.isRequired
     }).isRequired,
-    onBackToShop: PropTypes.func
+    goToCatalog: PropTypes.func
 }
 
-export default ThankYou;
+const mapStateToProps = state => ({
+    details: state.order.details
+});
+
+const mapDispatchToProps = {
+    goToCatalog
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThankYou);

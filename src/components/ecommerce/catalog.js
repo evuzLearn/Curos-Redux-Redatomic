@@ -14,9 +14,7 @@ class Catalog extends Component {
     }
 
     componentDidMount () {
-        setTimeout(() => {
-            this.props.saveProducts(catalogProducts);
-        }, 500)
+        this.props.saveProducts(catalogProducts);
     }
 
     handleAddToCart (product) {
