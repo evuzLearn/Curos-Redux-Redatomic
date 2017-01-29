@@ -2,25 +2,34 @@ import React, { Component, PropTypes } from 'react';
 import Title from './title';
 import CartItem from './cart_item';
 import Buttons from './buttons';
+import { connect } from 'react-redux';
+import { changeQty } from '../../modules/cart';
+import { goToCatalog, goToCheckout } from '../../modules/route';
 
 class Cart extends Component {
-    handleFollowBuy() {
-        this.props.onNavigate('catalog');
+    constructor(props) {
+        super(props);
+
+        this.handleCatalog = this.handleCatalog.bind(this);
+        this.handleCheckout = this.handleCheckout.bind(this);
+    }
+    handleCatalog() {
+        this.props.goToCatalog();
     }
 
-    handleFinishBuy() {
-        this.props.onNavigate('checkout');
+    handleCheckout() {
+        this.props.goToCheckout();
     }
 
     render() {
-        const { cart, onChangeQty } = this.props;
+        const { products, onChangeQty } = this.props;
         let total = 0;
-        const cartItems = cart.map(x => {
+        const cartItems = products.map(x => {
             total += x.qty * x.price;
             return <CartItem
                 key={x.id}
                 product={x}
-                onChangeQty={onChangeQty}
+                onChangeQty={this.props.changeQty}
                 />
         });
         total = total.toFixed(2);
@@ -50,10 +59,10 @@ class Cart extends Component {
                     </table>
                 </div>
                 <div className="footer">
-                    <a className="button" onClick={this.handleFollowBuy.bind(this)}>Seguir comprando</a>
+                    <a className="button" onClick={this.handleCatalog}>Seguir comprando</a>
                     {
-                        cart.length ? 
-                        <a className="button" onClick={this.handleFinishBuy.bind(this)}>Finalizar compra</a> : null
+                        products.length ? 
+                        <a className="button" onClick={this.handleCheckout}>Finalizar compra</a> : null
                     }
                 </div>
             </div>
@@ -62,8 +71,20 @@ class Cart extends Component {
 }
 
 Cart.PropTypes = {
-    onNavigate: PropTypes.func,
-    cart: PropTypes.array
+    products: PropTypes.array.isRequired,
+    changeQty: PropTypes.func.isRequired,
+    goToCatalog: PropTypes.func.isRequired,
+    goToCheckout: PropTypes.func.isRequired
 }
 
-export default Cart;
+const mapStateToProps = state => ({
+    products: state.cart
+});
+
+const mapDispatchToProps = {
+    changeQty,
+    goToCatalog,
+    goToCheckout
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

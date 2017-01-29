@@ -2,14 +2,26 @@ import React, { Component, PropTypes } from 'react';
 import Title from './title';
 import ProductItem from './product_item';
 import { products as catalogProducts } from '../../data/catalog';
-import { saveProducts } from '../../modules/catalog/actions';
 import { connect } from 'react-redux';
+import { saveProducts } from '../../modules/catalog/actions';
+import { addToCart } from '../../modules/cart';
+import { goToCart } from '../../modules/route';
 
 class Catalog extends Component {
+    constructor (props) {
+        super(props);
+        this.handleAddToCart = this.handleAddToCart.bind(this);
+    }
+
     componentDidMount () {
         setTimeout(() => {
-            this.props.dispatch(saveProducts(catalogProducts));
+            this.props.saveProducts(catalogProducts);
         }, 500)
+    }
+
+    handleAddToCart (product) {
+        this.props.addToCart(product);
+        this.props.goToCart();
     }
 
     render() {
@@ -17,7 +29,7 @@ class Catalog extends Component {
         const productsItem = products.map(x => (
             <ProductItem key={x.id}
                 product={ x }
-                onAddCart={ onAddCart }
+                onAddCart={ this.handleAddToCart }
                 />
         ))
         return (
@@ -34,7 +46,9 @@ class Catalog extends Component {
 
 Catalog.PropTypes = {
     products: PropTypes.array,
-    onAddCart: PropTypes.func
+    saveProducts: PropTypes.func.isRequired,
+    addToCart: PropTypes.func.isRequired,
+    goToCart: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => {
@@ -43,4 +57,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Catalog);
+const mapDispatchToProps = {
+    goToCart,
+    saveProducts,
+    addToCart
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

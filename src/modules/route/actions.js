@@ -19,6 +19,6 @@ export function goToCheckout() {
     return setRoute('checkout');
 }
 
-export function goToThankYo() {
+export function goToThankYou() {
     return setRoute('thanYou');
 }
