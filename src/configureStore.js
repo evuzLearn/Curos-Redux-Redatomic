@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import route from './modules/route';
 import catalog from './modules/catalog';
 import cart from './modules/cart';
@@ -10,5 +11,5 @@ export default function configureStore () {
         cart
     })
 
-    return createStore(appReducers)
+    return createStore(appReducers, applyMiddleware(thunk));
 }
