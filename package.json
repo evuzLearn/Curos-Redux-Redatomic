@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development webpack-dev-server -d --hot --inline",
-    "build": "NODE_ENV=production webpack -p"
+    "start": "cross-env NODE_ENV=development webpack-dev-server -d --hot --inline",
+    "build": "cross-env NODE_ENV=production webpack -p"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.21.0",
+    "cross-env": "^3.1.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
