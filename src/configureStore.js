@@ -1,17 +1,26 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import route from './modules/route';
 import catalog from './modules/catalog';
 import cart from './modules/cart';
 import order from './modules/order';
 
-export default function configureStore () {
+export default function configureStore() {
     const appReducers = combineReducers({
         route,
         catalog,
         cart,
         order
     });
+    let enhacer;
+    if (process.env.NODE_ENV === 'development') {
+        enhacer = compose(
+            applyMiddleware(thunk),
+            window.devToolsExtension ? window.devToolsExtension() : f => f
+        )
+    } else {
+        enhacer = applyMiddleware(thunk);
+    }
 
-    return createStore(appReducers, applyMiddleware(thunk));
+    return createStore(appReducers, enhacer);
 }

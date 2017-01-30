@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 var entryPath = path.join(__dirname, 'src');
 var outPath = path.join(__dirname, 'dist');
 
@@ -17,6 +18,13 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+            }
+        })
+    ],
     devServer: {
         contentBase: outPath
     }
