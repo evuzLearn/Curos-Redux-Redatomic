@@ -19,7 +19,7 @@ function addToCart(cartItems, product) {
 function changeQty(cartItems, productId, qty) {
     return cartItems.map(x => {
         if (x.id == productId) {
-            x.qty = qty;
+            return Object.assign({}, x, {qty: qty})
         }
         return x;
     }).filter(x => x.qty > 0);

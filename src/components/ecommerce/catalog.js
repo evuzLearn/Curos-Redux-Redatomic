@@ -14,6 +14,7 @@ class Catalog extends Component {
     }
 
     componentDidMount () {
+        if (this.props.products.length > 0) return;
         this.props.saveProducts(catalogProducts);
     }
 
