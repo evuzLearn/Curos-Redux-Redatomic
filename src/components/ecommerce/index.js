@@ -1,40 +1,24 @@
 import React, { Component, PropTypes } from 'react';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import Layout from './layout';
 import Catalog from './catalog';
 import Cart from './cart';
 import Checkout from './checkout';
 import ThankYou from './thank_you';
-import { connect } from 'react-redux';  
 
 class Ecommerce extends Component {
-    getPageComponent(page) {
-        switch (page) {
-            case 'catalog':
-                return <Catalog />
-            case 'cart':
-                return <Cart />
-            case 'checkout':
-                return <Checkout />
-            case 'thankYou':
-                return <ThankYou />
-        }
-    }
-
     render() {
-        const component = this.getPageComponent(this.props.route); 
         return (
-            <div className="shopping-cart">
-                { component }
-            </div>
+            <Router history={ browserHistory }>
+                <Route path='/' component={ Layout }>
+                    <IndexRoute component={ Catalog } />
+                    <Route path='cart' component={ Cart } />
+                    <Route path='checkout' component={ Checkout } />
+                    <Route path='thank_you' component={ ThankYou } />
+                </Route>
+            </Router>
         )
     }
 }
 
-Ecommerce.PropTypes = {
-    route: PropTypes.string.isRequired
-}
-
-const mapStateToProps = state => ({
-    route: state.route
-})
-
-export default connect(mapStateToProps)(Ecommerce);
+export default Ecommerce;
