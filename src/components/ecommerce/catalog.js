@@ -25,7 +25,7 @@ class Catalog extends Component {
     }
 
     render() {
-        const { products, onAddCart } = this.props;
+        const { products } = this.props;
         const productsItem = products.map(x => (
             <ProductItem key={x.id}
                 product={ x }
@@ -52,8 +52,9 @@ Catalog.PropTypes = {
 }
 
 const mapStateToProps = state => {
+    const products = state.catalog.productsIds.map(x => state.catalog.byId[x]);
     return {
-        products: state.catalog.products,
+        products,
         isFetching: state.catalog.isFetching,
         errors: state.catalog.errors
     }

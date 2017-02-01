@@ -28,10 +28,19 @@ function errors(state = {}, action) {
     }
 }
 
-export function products(state = [], action) {
+function productsIds(state = [], action) {
     switch (action.type) {
         case FETCH_PRODUCTS_SUCCESS:
-            return action.payload;
+            return action.payload.result
+        default:
+            return state;
+    }
+}
+
+function byId(state = {}, action) {
+    switch (action.type) {
+        case FETCH_PRODUCTS_SUCCESS:
+            return Object.assign({}, state, action.payload.entities.products);
         default:
             return state;
     }
@@ -40,5 +49,6 @@ export function products(state = [], action) {
 export default combineReducers({
     isFetching,
     errors,
-    products
+    productsIds,
+    byId
 })
