@@ -1,6 +1,6 @@
 import { SAVE_DETAILS, SAVE_ERRORS, CLEAR_ERRORS } from './actionTypes';
 import { emptyCart } from '../cart';
-import { goToThankYou } from '../route';
+import { browserHistory } from 'react-router';
 
 function validate(details) {
     const { firstName, lastName, email, address} = details;
@@ -39,8 +39,9 @@ export function saveOrder (details) {
             dispatch({
                 type: CLEAR_ERRORS
             });
+            debugger;
             dispatch(emptyCart());
-            dispatch(goToThankYou());
+            browserHistory.replace('/thank_you')
         }
     }
 }

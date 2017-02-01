@@ -1,26 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import Title from './title';
 import CartItem from './cart_item';
 import Buttons from './buttons';
 import { connect } from 'react-redux';
 import { changeQty } from '../../modules/cart';
-import { goToCatalog, goToCheckout } from '../../modules/route';
 
 class Cart extends Component {
-    constructor(props) {
-        super(props);
-
-        this.handleCatalog = this.handleCatalog.bind(this);
-        this.handleCheckout = this.handleCheckout.bind(this);
-    }
-    handleCatalog() {
-        this.props.goToCatalog();
-    }
-
-    handleCheckout() {
-        this.props.goToCheckout();
-    }
-
     render() {
         const { products, onChangeQty } = this.props;
         let total = 0;
@@ -35,7 +21,7 @@ class Cart extends Component {
         total = total.toFixed(2);
         return (
             <div className="cart">
-                <Title title='Productos' />
+                <Title title='Carrito de la compra' />
                 <div className="cart-contents">
                     <table cellSpacing="0">
                         <thead>
@@ -59,10 +45,10 @@ class Cart extends Component {
                     </table>
                 </div>
                 <div className="footer">
-                    <a className="button" onClick={this.handleCatalog}>Seguir comprando</a>
+                    <Link to='/' className="button">Seguir comprando</Link>
                     {
                         products.length ? 
-                        <a className="button" onClick={this.handleCheckout}>Finalizar compra</a> : null
+                        <Link to='/checkout' className="button">Finalizar compra</Link> : null
                     }
                 </div>
             </div>
@@ -72,9 +58,7 @@ class Cart extends Component {
 
 Cart.PropTypes = {
     products: PropTypes.array.isRequired,
-    changeQty: PropTypes.func.isRequired,
-    goToCatalog: PropTypes.func.isRequired,
-    goToCheckout: PropTypes.func.isRequired
+    changeQty: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -82,9 +66,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    changeQty,
-    goToCatalog,
-    goToCheckout
+    changeQty
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

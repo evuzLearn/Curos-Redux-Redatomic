@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
+import { fetchProducts } from '../../modules/catalog/actions';
+import { addToCart } from '../../modules/cart';
+
 import Title from './title';
 import ProductItem from './product_item';
-import { products as catalogProducts } from '../../data/catalog';
-import { connect } from 'react-redux';
-import { saveProducts } from '../../modules/catalog/actions';
-import { addToCart } from '../../modules/cart';
-import { goToCart } from '../../modules/route';
 
 class Catalog extends Component {
     constructor (props) {
@@ -15,12 +16,12 @@ class Catalog extends Component {
 
     componentDidMount () {
         if (this.props.products.length > 0) return;
-        this.props.saveProducts(catalogProducts);
+        this.props.fetchProducts();
     }
 
     handleAddToCart (product) {
         this.props.addToCart(product);
-        this.props.goToCart();
+        this.props.router.push('/cart');
     }
 
     render() {
@@ -30,7 +31,7 @@ class Catalog extends Component {
                 product={ x }
                 onAddCart={ this.handleAddToCart }
                 />
-        ))
+        ))   
         return (
             <div className="catalog">
                 <Title title='Productos' />
@@ -45,21 +46,24 @@ class Catalog extends Component {
 
 Catalog.PropTypes = {
     products: PropTypes.array,
-    saveProducts: PropTypes.func.isRequired,
+    fetchProducts: PropTypes.func.isRequired,
     addToCart: PropTypes.func.isRequired,
-    goToCart: PropTypes.func.isRequired,
+    router: PropTypes.object
 }
 
 const mapStateToProps = state => {
     return {
-        products: state.catalog
+        products: state.catalog.products,
+        isFetching: state.catalog.isFetching,
+        errors: state.catalog.errors
     }
 }
 
 const mapDispatchToProps = {
-    goToCart,
-    saveProducts,
+    fetchProducts,
     addToCart
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(Catalog)
+);

@@ -1,19 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { saveOrder, saveDetails } from '../../modules/order';
-import { goToCart } from '../../modules/route';
 import Title from './title';
 import CheckoutFormItem from './checkout_form_item';
 class Checkout extends Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.saveOrder(this.props.details);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleFieldChange (e) {
@@ -22,11 +17,16 @@ class Checkout extends Component {
         })
     }
 
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.saveOrder(this.props.details);
+    }
+
     render() {
         const { errors, details } = this.props;
         return (
             <div className="checkout">
-                <Title title='Productos' />
+                <Title title='Finalizar pedido' />
 
                 <div className="checkout-form">
                     <CheckoutFormItem label="Nombre" error={errors.firstName}>
@@ -66,7 +66,7 @@ class Checkout extends Component {
                     </CheckoutFormItem>
                     <div className="row">
                         <div className="col one-one">
-                            <button className="button" onClick={this.props.goToCart}>Volver</button>
+                            <Link className="button" to='/cart'>Volver</Link>
                         </div>
                         <div className="col two-one">
                             <button className="button" onClick={this.handleSubmit}>Finalizar</button>
@@ -86,7 +86,6 @@ Checkout.PropTypes = {
       email: PropTypes.string.isRequired,
       address: PropTypes.string.isRequired,  
     }),
-    goToCart: PropTypes.func.isRequired,
     saveDetails: PropTypes.func.isRequired,
     saveOrder: PropTypes.func.isRequired,
 }
@@ -98,8 +97,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     saveDetails,
-    saveOrder,
-    goToCart
+    saveOrder
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
